@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:m="clr-namespace:MauiWxApp.Models"
+             xmlns:vm="clr-namespace:MauiWxApp.ViewModels"
+             x:Class="MauiWxApp.Views.MainPage"
+             x:DataType="vm:MainPageViewModel">
+    
+        <StackLayout
+            Padding="20">
+            <Label Text="{Binding Title}"
+                   HorizontalTextAlignment="Center"
+                   FontSize="Title"/>
+            <StackLayout Orientation="Horizontal"
+                         Spacing="20"
+                         Padding="20">
+                <Entry Text="{Binding StateCode}"
+                       Placeholder="ex. TX"
+                       TextTransform="Uppercase"
+                       MaxLength="2"
+                       HorizontalOptions="FillAndExpand"/>
+                <Button Text="Get Alerts"
+                        Command="{Binding GetAlertsCommand}"/>
+            </StackLayout>
+            <Label Text="{Binding AlertsCount}"
+                   FontSize="Small"
+                   Margin="20,0"
+                   HorizontalOptions="Start"
+                   TextColor="Gray"/>
+            <ListView HasUnevenRows="True"
+                      ItemsSource="{Binding Alerts}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="m:Alert">
+                    <ViewCell>
+                        <StackLayout
+                            Padding="10">
+                            <Label Text="{Binding Event}"
+                                   FontSize="Subtitle"
+                                   FontAttributes="Bold"/>
+                            <Label Text="{Binding Headline}"
+                                   FontSize="Small"
+                                   Padding="5,0"
+                                   TextColor="Gray"/>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        </StackLayout>
+</ContentPage>
+
