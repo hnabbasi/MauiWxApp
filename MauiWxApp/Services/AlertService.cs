@@ -30,9 +30,8 @@ namespace MauiWxApp.Services
             {
                 var features = json["features"];
 
-                if (features == null || features.Type == JTokenType.Null || features.Count() == 0)
+                if (features == null || features.Type == JTokenType.Null || features.Any())
                 {
-                    Console.WriteLine($">>> No alerts found.");
                     return Array.Empty<Alert>();
                 }
                 var count = features.Count();
@@ -54,7 +53,7 @@ namespace MauiWxApp.Services
 
                     var sent = prop["sent"];
                     if (sent != null && sent.Type != JTokenType.Null)
-                        alert.Sent = DateTimeOffset.Parse(sent.Value<string>());
+                        alert.Sent = DateTimeOffset.Parse(sent.Value<string>()!);
 
                     var @event = prop["event"];
                     if (@event != null && @event.Type != JTokenType.Null)
@@ -66,7 +65,6 @@ namespace MauiWxApp.Services
 
                     alerts[i] = alert;
                 }
-                Console.WriteLine($">>> Found {count} alerts");
                 return alerts;
             }
             catch (Exception ex)

@@ -13,12 +13,14 @@
                    FontSize="Title"/>
             <StackLayout Orientation="Horizontal"
                          Spacing="20"
-                         Padding="20">
+                         Padding="20"
+                         Margin="10">
                 <Entry Text="{Binding StateCode}"
                        Placeholder="ex. TX"
                        TextTransform="Uppercase"
                        MaxLength="2"
-                       HorizontalOptions="FillAndExpand"/>
+                       HorizontalOptions="FillAndExpand"
+                       Margin="10,0"/>
                 <Button Text="Get Alerts"
                         Command="{Binding GetAlertsCommand}"/>
             </StackLayout>
