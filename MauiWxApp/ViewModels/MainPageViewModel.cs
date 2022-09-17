@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Maui.Animations;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using MauiWxApp.Models;
 using MauiWxApp.Services;
@@ -10,7 +9,7 @@ namespace MauiWxApp.ViewModels
 	{
         private readonly IAlertService _alertService;
 
-        public ICommand GetAlertsCommand { get; set; }
+        public ICommand GetAlertsCommand { get; }
 
         private string _stateCode;
         public string StateCode
@@ -26,12 +25,7 @@ namespace MauiWxApp.ViewModels
             set => SetProperty(ref _alertsCount, value);
         }
 
-        private Alert[] _alerts;
-        public Alert[] Alerts
-        {
-            get => _alerts;
-            set => SetProperty(ref _alerts, value);
-        }
+        public ObservableCollection<Alert> Alerts { get; } = new();
 
         public MainPageViewModel(IAlertService alertService)
         {
@@ -43,12 +37,14 @@ namespace MauiWxApp.ViewModels
 
         private async void OnGetAlertsTapped()
         {
-            Alerts = await _alertService.GetAlerts(StateCode);
+            if (Alerts.Count > 0)
+                Alerts.Clear();
 
-            if (Alerts.Length > 0)
-                AlertsCount = $"Found {Alerts.Length} active alerts";
-            else
-                AlertsCount = "No active alerts found";
+            var alerts = await _alertService.GetAlerts(StateCode);
+            foreach (var alert in alerts)
+                Alerts.Add(alert);
+            
+            AlertsCount = Alerts.Count > 0 ? $"Found {Alerts.Count} active alerts for {StateCode}" : $"No active alerts found for {StateCode}";
         }
     }
 }
